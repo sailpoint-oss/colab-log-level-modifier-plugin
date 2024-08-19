@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE Plugin PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Plugin name="@PLUGIN_NAME@" displayName="@PLUGIN_DISPLAY_NAME@" minSystemVersion="7.1" certificationLevel="None" version="@VERSION@">
+	<Attributes>
+		<Map>
+			<entry key="fullPage">  
+        		<value>  
+          			<FullPage title="Loggers" />
+        		</value>
+        	</entry>
+        	<entry key="restResources">  
+        		<value>  
+          			<List>  
+            			<String>sailpoint.plugin.logLevel.LogLevelModifier</String>  
+          			</List>  
+        		</value>  
+      		</entry>
+      		<entry key="settings">  
+		        <value>  
+		          <List>   
+		          </List>  
+		        </value>  
+			</entry>  
+		</Map>
+	</Attributes>
+</Plugin>

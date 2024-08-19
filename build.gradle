@@ -1,0 +1,66 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+}
+
+group 'sailpoint.plugin.logLevel'
+version '1.1.0'
+
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+dependencies {
+    implementation 'jakarta.ws.rs:jakarta.ws.rs-api:2.1.6'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation files('lib/identityiq.jar')
+}
+
+ext {
+    zipName = "${rootProject.name}.${version}.zip"
+    distDir = "dist"
+}
+
+ext {
+    ant.buildnumber(file: "build.num")
+    build_number = ant.properties['build.number']
+}
+
+clean {
+    delete "${rootDir}/${distDir}"
+}
+
+task copyJars(type: Copy, dependsOn: ['build']) {
+    from 'build/libs'
+    into("${distDir}/jars")
+}
+
+task copyWeb(type: Copy) {
+    from 'web'
+    exclude 'manifest.xml'
+    into("${distDir}")
+}
+
+task copyManifest(type: Copy) {
+    from { 'web' }
+    into("${distDir}")
+    include 'manifest.xml'
+    filter(ReplaceTokens, tokens: [VERSION: version+"."+build_number, PLUGIN_NAME: rootProject.name, PLUGIN_DISPLAY_NAME: pluginDisplayName])
+}
+
+task buildPluginZip(type: Zip, dependsOn: ['copyJars', 'copyWeb', 'copyManifest']) {
+    archiveFileName = zipName
+    destinationDirectory = file(distDir)
+    from distDir
+    exclude '*.zip'
+}
+

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC
+        "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (c) Copyright 2016 SailPoint Technologies, Inc., All Rights Reserved. -->
+
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:sp="http://sailpoint.com/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jstl/core"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:t="http://myfaces.apache.org/tomahawk">
+<head></head>
+<body>
+    <ui:composition>
+    	<div ng-app="LogLevelModifierApp" ng-controller="LogLevelModifierController as contr">
+    		<br/>
+    		<br/>
+    		<div id="filter">
+    			<form name="myForm">
+    				&nbsp;&nbsp;<input type="text" name="filterValue" ng-model="logFilter"/>
+    				<button ng-click="filterLoggers()" ng-show="true" id="filterButton" class="primaryBtn btn btn-default">Filter</button>
+    				<button ng-click="clearFilter()" ng-show="true" id="filterButton" class="primaryBtn btn btn-default">Clear Filter</button>
+    				<button ng-click="getLoggers()" ng-show="true" id="filterButton" class="primaryBtn btn btn-default">Reload filters</button>
+    				<br/>
+    				&nbsp;&nbsp;
+    				<label>
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="All levels" ng-change="filterLoggers()"/>All levels
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="trace" ng-change="filterLoggers()"/>trace
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="debug" ng-change="filterLoggers()"/>debug
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="info" ng-change="filterLoggers()"/>info
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="warn" ng-change="filterLoggers()"/>warn
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="error" ng-change="filterLoggers()"/>error
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="fatal" ng-change="filterLoggers()"/>fatal
+    				</label>&nbsp;
+    				<label >
+	   				<input style="width:2em;" type="radio" name="levelFilter" ng-model="selectedLevel" value="off" ng-change="filterLoggers()"/>off
+    				</label>
+    				<br/>
+    			</form>
+    		</div>
+
+    		<div id="loggersDiv" class="panel panel-info ng-hide" ng-show="true">
+		  		<!-- Default panel contents -->
+		  		<div class="panel-heading">Loggers</div>
+		  		<div class="panel-body">
+		  			<!-- Table -->
+		  			<table id="partResTable" class="table table-striped">
+				    	<tr>
+				   	 		<th>Logger Name</th>
+
+				   	 		<th>Level Control</th>
+				   	 		<th>Parent</th>
+				   	 		<th>Effective Level</th>
+				  		</tr>
+				  		<tr ng-repeat="p in loggers" ng-show="p.show">
+				  			<td>{{p.LoggerName}}</td>
+
+			                <td>
+			                	<button ng-repeat="level in levels" ng-click="setLogLevel(p.LoggerName, level)" ng-disabled="isDisabled(p.EffectiveLevel, level)"
+			                	ng-show="true" id="filterButton" class="primaryBtn btn btn-default">{{level}}</button>
+			                </td>
+			                <td>{{p.Parent}}</td>
+			                <td>{{p.EffectiveLevel}}</td>
+				  		</tr>
+		  			</table>
+		  		</div>
+			</div>
+
+    		<div id="rawData" ng-show="true" class="ng-hide">
+				{{rawData}}
+			</div>
+    	</div>
+
+    	<script src="#{plugins.requestContextPath}/plugin/LogLevelModifier/ui/js/angular.min.js"></script>
+    	<script src="#{plugins.requestContextPath}/plugin/LogLevelModifier/ui/js/app.js"></script>
+    </ui:composition>
+</body>
+</html>
